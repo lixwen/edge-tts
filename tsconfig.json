@@ -23,7 +23,8 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
-
+    "outDir": "./dist",
+    "rootDir": "./src",
     "types": ["bun-types"]
   },
   "include": ["src/**/*"],

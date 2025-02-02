@@ -1,8 +1,8 @@
 {
-  "name": "@andresaya/edge-tts",
-  "version": "1.2.4",
+  "name": "@lixen/edge-tts",
+  "version": "1.2.6",
   "description": "Edge TTS is a package that allows access to the online text-to-speech service used by Microsoft Edge without the need for Microsoft Edge, Windows, or an API key.",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "keywords": [
     "edge",
     "tts",
@@ -11,14 +11,14 @@
     "microsoft edge",
     "speech-synthesis"
   ],
-  "author": "Andres Aya",
+  "author": "Lixen",
   "license": "GPL-3.0-only",
-  "homepage": "https://github.com/andresayac/edge-tts",
+  "homepage": "https://github.com/lixwen/edge-tts",
   "bugs": {
-    "url": "https://github.com/andresayac/edge-tts/issues"
+    "url": "https://github.com/lixwen/edge-tts/issues"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "bun build ./src/index.ts --outdir ./dist --target node --format cjs && bun build ./src/cli/edge-tts.ts --outdir ./dist/cli --target node --format cjs",
     "build:bin": "bun scripts/build.ts",
     "test": "bun test",
     "test:watch": "bun test --watch",
@@ -43,9 +43,15 @@
     "dist"
   ],
   "bin": {
-    "edge-tts-cli": "./dist/cli/edge-tts.js"
+    "edge-tts": "./dist/cli/edge-tts.js"
   },
   "engines": {
     "bun": ">=0.5.0"
-  }
+  },
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

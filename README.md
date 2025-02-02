@@ -15,10 +15,10 @@
 You can install Edge TTS via npm. Run the following command in your terminal:
 
 ```bash
-bun add @andresaya/edge-tts
+bun add @lixen/edge-tts
 ```
 ```bash
-npm install @andresaya/edge-tts
+npm install @lixen/edge-tts
 ```
 
 
@@ -28,7 +28,7 @@ Command-Line Interface
 You can install Edge TTS via npm. bun  Run the following command in your terminal:
 
 ```bash
-npm install -g @andresaya/edge-tts
+npm install -g @lixen/edge-tts
 ```
 
 To synthesize speech from text, use the following command:
@@ -46,7 +46,7 @@ Integration into Your Project
 To use Edge TTS in your Bun project, you can import it like this:
 
 ```js
-import { EdgeTTS } from '@andresaya/edge-tts';
+import { EdgeTTS } from '@lixen/edge-tts';
 
 // Initialize the EdgeTTS service
 const tts = new EdgeTTS();
@@ -75,17 +75,10 @@ After synthesizing speech, you can export the audio in various formats:
 - `toFile`: Saves the audio to a specified file (e.g., "output.wav").
 - `toRaw`: Returns the raw audio stream.
 
-## PHP Version
-If you want to use Edge TTS with PHP, you can check out the PHP version of this package, [Edge TTS PHP](https://github.com/andresayac/edge-tts-php)
-
 
 ## License
 This project is licensed under the GNU General Public License v3 (GPLv3).
 
-## Acknowledgments
-
-We would like to extend our gratitude to the developers and contributors of the following projects for their inspiration and groundwork:
-
-* https://github.com/rany2/edge-tts/tree/master/examples
-* https://github.com/rany2/edge-tts/blob/master/src/edge_tts/util.py
-* https://github.com/hasscc/hass-edge-tts/blob/main/custom_components/edge_tts/tts.py
+## Thanks
+Thanks to [rany2](https://github.com/rany2/edge-tts) for the original implementation.
+Thanks to [andresayac](https://github.com/andresayac/edge-tts) for the typescript version.
