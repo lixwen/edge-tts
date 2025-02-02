@@ -19,10 +19,14 @@
   },
   "scripts": {
     "build": "tsc",
-    "build:bin": "bun scripts/build.ts"
+    "build:bin": "bun scripts/build.ts",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage"
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/ws": "^8.5.14",
     "typescript": "^5.6.2"
   },
   "dependencies": {
@@ -39,7 +43,7 @@
     "dist"
   ],
   "bin": {
-    "edge-tts": "./dist/cli/edge-tts.js"
+    "edge-tts-cli": "./dist/cli/edge-tts.js"
   },
   "engines": {
     "bun": ">=0.5.0"

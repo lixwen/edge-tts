@@ -1,6 +1,8 @@
 import WebSocket from 'ws';
 import { Constants } from '../config/constants';
 import { writeFileSync } from 'fs';
+import { WSS_HEADERS } from '../config/constants';
+import { DRM } from '../utils/DRM';
 
 export class EdgeTTS {
     private audio_stream: any[] = [];
@@ -48,31 +50,39 @@ export class EdgeTTS {
     }
 
     async synthesize(text: string, voice: string = 'en-US-AnaNeural', options: any = {}): Promise<void> {
-        return new Promise((resolve, reject) => {
-            const req_id = this.generateUUID();
-            this.ws = new WebSocket(`${Constants.WSS_URL}?trustedclienttoken=${Constants.TRUSTED_CLIENT_TOKEN}&ConnectionId=${req_id}`);
+        return new Promise(async (resolve, reject) => {
+            try {
+                const req_id = this.generateUUID();
+                const secMsGec = await DRM.generateSecMsGec();
 
-            const SSML_text = this.getSSML(text, voice, options);
+                const CHROMIUM_FULL_VERSION = "130.0.2849.68"
+                const SEC_MS_GEC_VERSION = `1-${CHROMIUM_FULL_VERSION}`
 
-            this.ws.on('open', () => {
-                const message = this.buildTTSConfigMessage();
-                this.ws.send(message);
+                this.ws = new WebSocket(
+                    `${Constants.WSS_URL}?Sec-MS-GEC=${secMsGec}&Sec-MS-GEC-Version=${SEC_MS_GEC_VERSION}&TrustedClientToken=${Constants.TRUSTED_CLIENT_TOKEN}&ConnectionId=${req_id}`,
+                    { headers: WSS_HEADERS }
+                );
 
-                const speechMessage = `X-RequestId:${req_id}\r\nContent-Type:application/ssml+xml\r\nX-Timestamp:${new Date().toISOString()}Z\r\nPath:ssml\r\n\r\n${SSML_text}`;
-                this.ws.send(speechMessage);
-            });
+                const SSML_text = this.getSSML(text, voice, options);
 
-            this.ws.on('message', (data) => {
-                this.processAudioData(data);
-            });
+                this.ws.on('open', () => {
+                    const message = this.buildTTSConfigMessage();
+                    this.ws.send(message);
 
-            this.ws.on('close', () => {
-                resolve();
-            });
+                    const speechMessage = `X-RequestId:${req_id}\r\nContent-Type:application/ssml+xml\r\nX-Timestamp:${new Date().toISOString()}Z\r\nPath:ssml\r\n\r\n${SSML_text}`;
+                    this.ws.send(speechMessage);
+                });
 
-            this.ws.on('error', (err) => {
+                this.ws.on('message', (data) => {
+                    this.processAudioData(data);
+                });
+
+                this.ws.on('close', () => {
+                    resolve();
+                });
+            } catch (err) {
                 reject(err);
-            });
+            }
         });
     }
 
